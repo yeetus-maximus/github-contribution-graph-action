@@ -11,20 +11,4 @@ jobs:
     - uses: bcanseco/github-contribution-graph-action@v2
       env:
         GITHUB_TOKEN: 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
-        GIT_EMAIL: techsquad@antilinuxgang.com # replace me
-
-# .github/workflows/main.yml
-
-on: push
-
-jobs:
-  backfill-commits:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: bcanseco/github-contribution-graph-action@v2
-      env:
-        GITHUB_TOKEN: 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
-        GIT_EMAIL: techsquad@antilinuxgang.com
-        MAX_DAYS: 365
-        MIN_COMMITS_PER_DAY: 1
-        MAX_COMMITS_PER_DAY: 5
+        GIT_EMAIL: archfx0@archfx0.xyz # replace me
