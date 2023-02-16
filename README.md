@@ -57,6 +57,8 @@ on:
 jobs:
   single-commit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: bcanseco/github-contribution-graph-action@v2
       env:
@@ -78,6 +80,8 @@ on: push
 jobs:
   backfill-commits:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: bcanseco/github-contribution-graph-action@v2
       env:
@@ -134,7 +138,7 @@ Explore the [code](src/index.js)! It's tiny and there aren't many dependencies.
 
 Speaking of dependencies, all production npm dependencies used by this GitHub Action are [automatically audited](./.github/workflows/audit.yml) for vulnerabilities. If the badge at the top of this README is green, you're good to go.
 
-If you're still worried about malicious code in this repository, GitHub recommends always using a specific version of any GitHub Actions you add to your repositories. [Read more](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+If you're still worried about malicious code in this repository, GitHub recommends always using a specific version of any GitHub Actions you add to your repositories. [Read more](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
 ```diff
 - uses: bcanseco/github-contribution-graph-action@v2
@@ -148,7 +152,7 @@ As far as data security, there's two sensitive pieces of data that this Action h
 
 ### `GITHUB_TOKEN` 🔑
 
-GitHub has [a great article](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#using-the-github_token-in-a-workflow) about the token. It's the standard way that all GitHub Actions interact with GitHub on your behalf. The permissions of this token are both short-lived and scoped to one repo only.
+GitHub has [a great article](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#using-the-github_token-in-a-workflow) about the token. It's the standard way that all GitHub Actions interact with GitHub on your behalf. The permissions of this token are both short-lived and scoped to one repo only.
 
 You don't need to create this secret yourself; GitHub handles that for you. All you need to do is provide the token in your workflow, job, or step:
 
@@ -157,14 +161,22 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+#### Getting 403 errors? ❌
+
+Make sure your token has [write permission for the `contents` scope](https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs). If you're using the examples in this README, this is already done for you.
+
+You can alternatively set this as a repo-level default:
+
+![](./.github/images/token-permissions.png)
+
 ### `GIT_EMAIL` 📧
 
-This GitHub Action requires an email associated with your GitHub account. If you provide a random or throwaway email, contributions won't show up on your GitHub profile. [Read more](https://help.github.com/en/github/setting-up-and-managing-your-github-profile/why-are-my-contributions-not-showing-up-on-my-profile#you-havent-added-your-local-git-commit-email-to-your-profile).
+This GitHub Action requires an email associated with your GitHub account. If you provide a random or throwaway email, contributions won't show up on your GitHub profile. [Read more](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/why-are-my-contributions-not-showing-up-on-my-profile#you-havent-added-your-local-git-commit-email-to-your-profile).
 
 Chances are, your email is already public if you're making commits with it. But if you're concerned about privacy, you can do either of the following:
 
-* [Add your email as a secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) and pass it in the same way as the `GITHUB_TOKEN`
-* [Use your GitHub-provided `noreply` email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address#about-commit-email-addresses)
+* [Add your email as a secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) and pass it in the same way as the `GITHUB_TOKEN`
+* [Use your GitHub-provided `noreply` email address](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address#about-commit-email-addresses)
 
 ## Contribute 👪
 
